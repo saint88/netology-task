@@ -54,7 +54,6 @@
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
             <version>${faker.version}</version>
-            <scope>import</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

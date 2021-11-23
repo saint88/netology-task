@@ -42,4 +42,20 @@ public abstract class ScheduledNotificationAbs<T> extends AnyPopupAbs<T> {
     return (T)this;
   }
 
+  public T notifyContent(String expectedNotifyContent) {
+    String contentSelector = popupSelector + " .notification__content";
+    assertEquals(expectedNotifyContent, driver.findElement(By.cssSelector(contentSelector)).getText(), "Notification title is wrong");
+
+    return (T)this;
+  }
+
+  public T notifyContentContains(String expectedNotifyContent) {
+    String contentSelector = popupSelector + " .notification__content";
+    assertTrue(driver.findElement(By.cssSelector(contentSelector)).getText().contains(expectedNotifyContent), "Notification title is wrong");
+
+    return (T)this;
+  }
+
+
+
 }

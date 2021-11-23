@@ -13,6 +13,8 @@ import org.openqa.selenium.WebDriver;
 import pages.CardDeliveryPage;
 import runners.UIExtension;
 
+import java.time.format.DateTimeFormatter;
+
 @ExtendWith(UIExtension.class)
 public class CardDeliveryForm_Test {
 
@@ -46,22 +48,21 @@ public class CardDeliveryForm_Test {
     deliveryCardForm.clickScheduledMeet();
 
     successScheduledNotification.popupShouldBeVisible()
-        .notifyTitleShouldBeSameAs("Успешно!");
+        .notifyTitleShouldBeSameAs("Успешно!")
+        .notifyContent(String.format("Встреча успешно запланирована на %s", user.getMeetDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
   }
 
   @Test
   public void test_field_subscription() {
-    CardDeliveryPage cardDeliveryPage = new CardDeliveryPage(driver);
-    cardDeliveryPage.open();
+    new CardDeliveryPage(driver).open();
 
-    DeliveryCardForm deliveryCardForm = new DeliveryCardForm(driver);
-    deliveryCardForm.userNameFieldSubscriptionShouldBeSameAs(FieldSubscriptions.UserName.getSubscription());
-    deliveryCardForm.dateFieldSubscriptionShouldBeSameAs(FieldSubscriptions.MeetDate.getSubscription());
-    deliveryCardForm.cityFieldDescribeShouldBeSameAs(FieldSubscriptions.City.getSubscription());
-    deliveryCardForm.phoneFieldSubscriptionShouldBeSameAs(FieldSubscriptions.Phone.getSubscription());
-
-    deliveryCardForm.agreementCheckboxTextShouldBeSameAs("Я соглашаюсь с условиями обработки и использования моих персональных данных");
-    deliveryCardForm.securityTextInfoShouldBeSameAs("  Мы гарантируем безопасность ваших данных");
+    new DeliveryCardForm(driver)
+        .userNameFieldSubscriptionShouldBeSameAs(FieldSubscriptions.UserName.getSubscription())
+        .dateFieldSubscriptionShouldBeSameAs(FieldSubscriptions.MeetDate.getSubscription())
+        .cityFieldDescribeShouldBeSameAs(FieldSubscriptions.City.getSubscription())
+        .phoneFieldSubscriptionShouldBeSameAs(FieldSubscriptions.Phone.getSubscription())
+        .agreementCheckboxTextShouldBeSameAs("Я соглашаюсь с условиями обработки и использования моих персональных данных")
+        .securityTextInfoShouldBeSameAs("  Мы гарантируем безопасность ваших данных");
   }
 
   @Test
@@ -72,22 +73,18 @@ public class CardDeliveryForm_Test {
     UserGenerator userGenerator = new UserGenerator();
     User user = userGenerator.generate();
 
-    DeliveryCardForm deliveryCardForm = new DeliveryCardForm(driver);
-    deliveryCardForm.typeUserName(user.getUsername());
-    deliveryCardForm.userNameShouldBeSameAs(user.getUsername());
-
-    deliveryCardForm.setDate(user.getMeetDate());
-    deliveryCardForm.dateInFieldShouldBeSameAs(user.getMeetDate());
-
-    deliveryCardForm.typeCityInField(user.getCity());
-    deliveryCardForm.cityInFieldShouldBeSameAs(user.getCity());
-
-    deliveryCardForm.typePhoneInField(user.getPhone());
-    deliveryCardForm.phoneInFieldShouldBeSameAs(user.getPhone());
-
-    deliveryCardForm.agreementCheckboxStateShouldBeSameAs(false);
-    deliveryCardForm.setStateOfAgreementCheckbox(true);
-    deliveryCardForm.agreementCheckboxStateShouldBeSameAs(true);
+    DeliveryCardForm deliveryCardForm = new DeliveryCardForm(driver)
+        .typeUserName(user.getUsername())
+        .userNameShouldBeSameAs(user.getUsername())
+        .setDate(user.getMeetDate())
+        .dateInFieldShouldBeSameAs(user.getMeetDate())
+        .typeCityInField(user.getCity())
+        .cityInFieldShouldBeSameAs(user.getCity())
+        .typePhoneInField(user.getPhone())
+        .phoneInFieldShouldBeSameAs(user.getPhone())
+        .agreementCheckboxStateShouldBeSameAs(false)
+        .setStateOfAgreementCheckbox(true)
+        .agreementCheckboxStateShouldBeSameAs(true);
 
     SuccessScheduledNotification successScheduledNotification = new SuccessScheduledNotification(driver);
     ReScheduledNotification reScheduledNotification = new ReScheduledNotification(driver);
@@ -101,12 +98,14 @@ public class CardDeliveryForm_Test {
     reScheduledNotification.popupShouldNotBeVisible();
     deliveryCardForm.clickScheduledMeet();
 
-    reScheduledNotification.popupShouldBeVisible();
-    reScheduledNotification.notifyTitleShouldBeSameAs("Необходимо подтверждение");
+    reScheduledNotification.popupShouldBeVisible()
+        .notifyTitleShouldBeSameAs("Необходимо подтверждение")
+        .notifyContentContains("У вас уже запланирована встреча на другую дату. Перепланировать?");
 
     reScheduledNotification.clickRePlanButton()
         .popupShouldBeVisible()
-        .notifyTitleShouldBeSameAs("Успешно!");
+        .notifyTitleShouldBeSameAs("Успешно!")
+        .notifyContent(String.format("Встреча успешно запланирована на %s", user.getMeetDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))));
   }
 
 }
