@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -16,7 +17,7 @@ import java.util.Set;
 
 public class UIExtension implements BeforeEachCallback, AfterEachCallback {
 
-  private WebDriver driver = new DriverFactory().getDriver();
+  private WebDriver driver = null;
 
   private Set<Field> getAnnotatedFields(Class<? extends Annotation> annotation, ExtensionContext extensionContext) {
     Set<Field> set = new HashSet<>();
@@ -34,6 +35,7 @@ public class UIExtension implements BeforeEachCallback, AfterEachCallback {
 
   @Override
   public void beforeEach(ExtensionContext extensionContext) {
+    driver = new DriverFactory().getDriver();
     Set<Field> fields = getAnnotatedFields(Driver.class, extensionContext);
 
     for (Field field : fields) {
