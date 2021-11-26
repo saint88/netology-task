@@ -1,4 +1,4 @@
-package card.delivery;
+package ui.card.delivery;
 
 import annotations.Driver;
 import components.card.delivery.DeliveryCardForm;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
 import pages.CardDeliveryPage;
-import runners.UIExtension;
+import extensions.UIExtension;
 
 import java.time.format.DateTimeFormatter;
 
