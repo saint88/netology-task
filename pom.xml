@@ -141,6 +141,7 @@
                     <threshold>Low</threshold>
                     <xmlOutput>true</xmlOutput>
                     <includeTests>true</includeTests>
+                    <omitVisitors>UnreadFields</omitVisitors>
                 </configuration>
                 <executions>
                     <execution>

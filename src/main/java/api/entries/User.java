@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
+@SuppressWarnings("URF_UNREAD_FIELD")
 public class User {
   @Expose
   private String login;
