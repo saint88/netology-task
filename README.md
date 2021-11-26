@@ -1,3 +1,3 @@
 # netology-ui-task
 
-UI Autotests for testing new form
+Autotests for netology of patterns topic
